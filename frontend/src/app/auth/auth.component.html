@@ -1,0 +1,21 @@
+<div class="flex justify-center items-center p-10">
+  <form [formGroup]="logInForm" (ngSubmit)="onSubmit()" class="w-3/12">
+    <!-- Email -->
+    <div>
+      <mat-form-field appearance="fill" class="w-full" hideRequiredMarker="true">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error
+          *ngIf="(logInForm.get('email')?.invalid && (logInForm.get('email')?.dirty || logInForm.get('email')?.touched)) && (logInForm.get('email')?.errors?.['required'])"
+          class=""
+          >Email cannot be empty</mat-error
+        >
+        <mat-error
+          *ngIf="(logInForm.get('email')?.invalid && (logInForm.get('email')?.dirty || logInForm.get('email')?.touched)) && (logInForm.get('email')?.errors?.['pattern'])"
+          >Please input email in the correct format</mat-error
+        >
+      </mat-form-field>
+      <button mat-raised-button color="primary">Submit</button>
+    </div>
+  </form>  
+</div>
