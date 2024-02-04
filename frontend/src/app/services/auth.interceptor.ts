@@ -1,43 +1,37 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
   HttpEvent,
-  HttpHandlerFn,
   HttpEventType,
-} from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+  HttpInterceptorFn,
+  HttpRequest,
+  provideHttpClient,
+  withInterceptors,
+} from "@angular/common/http";
+import { Observable, tap } from "rxjs";
 
-@Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-  constructor() {}
+export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
+  return next(req).pipe(
+    tap((event) => {
+      if (event.type === HttpEventType.Response) {
+        const responseBody: any = event.body;
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandlerFn
-  ): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('token'); 
-    if (token) {
-      const clonedRequest = request.clone({
-        setHeaders: {
-        Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return next.handle(clonedRequest);
-    }
-    return next.handle(request);
-  }
-
-  loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-    return next(req).pipe(tap(event => {
-      if (event.type === HttpEventType.ResponseHeader) {
-        locin
-        console.log(req.url, 'returned a response with status', event.status);
+        if (responseBody?.token) {
+          const token = responseBody.token;
+          localStorage.setItem("token", token);
+        }
       }
-    }));
-}
+    })
+  );
+};
 
-export function 
-}
+export const headerInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = localStorage.getItem('token'); 
+  // clone the request and set the new header
+  if (token) {
+    const reqWithHeader = req.clone({
+      headers: req.headers.set("Authorization", `Bearer ${token}`),
+    });
+    // pass the request to the next handler or the backend
+    return next(reqWithHeader);
+  }
+  return next(req)
+};

@@ -20,8 +20,7 @@ export class EmployeeAuthController {
       if (!isEmployee) res.json({ notExisting: true })
       
       const token = this.tokenUseCase.generateTokenWithUserId(email)
-      
-      console.log(token, 23);
+
       res.json({ message: 'Loging success', token })
       
     } catch (error) {

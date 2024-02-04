@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { AuthService } from './auth.service'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import {
   MatSnackBar,
   MatSnackBarAction,
@@ -53,7 +53,8 @@ export class AuthComponent {
   constructor(
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
     ) {}
 
   ngOnInit() {
@@ -90,8 +91,8 @@ export class AuthComponent {
 
       this.authService.punchIn(email).subscribe({
         next: res => {
-          console.log(res);
           if (res.notExisting) this.openSnackBar()
+          this.router.navigateByUrl('/home')
         }
       })
     }
