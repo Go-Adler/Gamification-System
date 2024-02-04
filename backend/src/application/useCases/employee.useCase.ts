@@ -16,4 +16,12 @@ export class EmployeeUseCase {
     }
   }
 
+  async add(email: string, name: string) {
+    try {
+      return await this.employeeDataAccess.createUser(email, name)
+    } catch (error) {
+        ErrorHandling.processError("Error in employeeExisting, EmployeeUseCase", error)
+    }
+  }
+
 }

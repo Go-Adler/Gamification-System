@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { AuthService } from './auth.service'
-import { HttpClientModule } from '@angular/common/http'
+import { RouterLink } from '@angular/router'
 
 
 @Component({
@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http'
     CommonModule,
     MatButtonModule,
     MatTooltipModule,
+    RouterLink,
   ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
@@ -79,7 +80,7 @@ export class AuthComponent {
 
       this.authService.punchIn(email).subscribe({
         next: res => {
-          console.log(res);
+          console.log(res, 83);
         }
       })
     }

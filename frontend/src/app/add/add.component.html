@@ -5,12 +5,40 @@
       <img src="/assets/images/Gamify(1).png" alt="" />
     </div>
     <div class="text-md flex items-center gap-2">
-      <div>Punch in to continue</div>
+      <div>Register to continue</div>
       <span class="material-symbols-rounded"> login </span>
     </div>
 
     <!-- Form area -->
-    <form [formGroup]="logInForm" (ngSubmit)="onSubmit()" class="w-10/12 md:w-8/12 lg:w-3/12">
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      class="w-10/12 md:w-8/12 lg:w-3/12"
+    >
+      <!-- Name -->
+      <div>
+        <mat-form-field
+          appearance="fill"
+          class="w-full"
+          hideRequiredMarker="true"
+        >
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+          @if (nameValid() === 'empty') {
+          <mat-error> Name cannot be empty </mat-error>
+          } @else if (nameValid() === 'format') {
+          <mat-error
+            >Please input name in the correct
+            <span
+              class="underline cursor-pointer"
+              [matTooltip]="nameToolTipInstructions"
+              >format</span
+            >.</mat-error
+          >
+          }
+        </mat-form-field>
+      </div>
+
       <!-- Email -->
       <div>
         <mat-form-field
@@ -37,12 +65,17 @@
           class="w-full mt-2"
           mat-raised-button
           color="primary"
-          [disabled]="!logInForm.valid"
+          [disabled]="!registerForm.valid"
         >
-          Punch in
+          Register
         </button>
         <div class="w-full flex justify-end">
-          <div [routerLink]="['/add']" class="underline mt-2 text-stone-700 cursor-pointer">Register</div>
+          <div
+            [routerLink]="['/auth']"
+            class="underline mt-2 text-stone-700 cursor-pointer"
+          >
+            Log in
+          </div>
         </div>
       </div>
     </form>

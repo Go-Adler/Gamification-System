@@ -13,7 +13,27 @@ export class EmployeeAuthController {
 
       // Check if the user exists in the database using the email
       const isEmployee = await this.employeeUseCase.employeeExisting(email.toLowerCase())
-      console.log(isEmployee, 16)
+      res.json({ isEmployee })
+      
+    } catch (error) {
+
+    }
+  }
+
+  employeeAdd= async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, name } = req.body 
+
+      // Check if the user exists in the database using the email
+      const isEmployeeExists = await this.employeeUseCase.employeeExisting(email.toLowerCase())
+      
+      if (isEmployeeExists) res.json({ employeeExists: true })
+
+      await this.employeeUseCase.add(email, name)
+
+      res.json({ message: 'Registration success', success: true })
+      
+
       
     } catch (error) {
 

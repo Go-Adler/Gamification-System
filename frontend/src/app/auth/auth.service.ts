@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../services/config.service'
+import { Success } from '../../shared/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -17,5 +18,9 @@ export class AuthService {
 
   punchIn(email: string) {
     return this.http.post(`${this.API_URL}employee/punch-in`, { email })
+  }
+
+  register(email: string, name: string) {
+    return this.http.post<Success>(`${this.API_URL}employee/add`, { email, name })
   }
 }
