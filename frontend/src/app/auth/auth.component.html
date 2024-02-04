@@ -1,29 +1,46 @@
-<div class="flex flex-col gap-20 justify-center items-center p-10">
-  <!-- Logo area -->
-  <div class="w-2/12">
-    <img src="/assets/images/Gamify(1).png" alt="" />
-  </div>
-
-  <!-- Form area -->
-  <form [formGroup]="logInForm" (ngSubmit)="onSubmit()" class="w-3/12">
-    <!-- Email -->
-    <div>
-      <mat-form-field
-        appearance="fill"
-        class="w-full"
-        hideRequiredMarker="true"
-      >
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" />
-        @if (emailValid() === 'empty') {
-          <mat-error> Email cannot be empty </mat-error>
-        } @else if (emailValid() === 'format') {
-          <mat-error>Please input email in the correct <span class="underline cursor-pointer"  [matTooltip]="emailToolTipInstructions">format</span>.</mat-error>
-        }
-      </mat-form-field>
-      <button class="w-full mt-2" mat-raised-button color="primary" [disabled]="!logInForm.valid">
-        Punch in
-      </button>
+<div class="flex flex-col gap-20 justify-center items-center p-4 h-full">
+  <div class="w-full flex justify-center flex-col items-center gap-4">
+    <!-- Logo area -->
+    <div class="w-4/12">
+      <img src="/assets/images/Gamify(1).png" alt="" />
     </div>
-  </form>
+    <div class="text-md flex items-center gap-2"><div>Punch in to continue</div> <span class="material-symbols-rounded">
+      login
+      </span></div>
+
+    <!-- Form area -->
+    <form [formGroup]="logInForm" (ngSubmit)="onSubmit()" class="">
+      <!-- Email -->
+      <div>
+        <mat-form-field
+          appearance="fill"
+          class="w-full"
+          hideRequiredMarker="true"
+        >
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          @if (emailValid() === 'empty') {
+          <mat-error> Email cannot be empty </mat-error>
+          } @else if (emailValid() === 'format') {
+          <mat-error
+            >Please input email in the correct
+            <span
+              class="underline cursor-pointer"
+              [matTooltip]="emailToolTipInstructions"
+              >format</span
+            >.</mat-error
+          >
+          }
+        </mat-form-field>
+        <button
+          class="w-full mt-2"
+          mat-raised-button
+          color="primary"
+          [disabled]="!logInForm.valid"
+        >
+          Punch in
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
