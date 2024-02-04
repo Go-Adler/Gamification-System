@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
@@ -12,6 +12,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { AuthService } from './auth.service'
 import { RouterLink } from '@angular/router'
+import {
+  MatSnackBar,
+  MatSnackBarAction,
+  MatSnackBarActions,
+  MatSnackBarLabel,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -32,6 +39,7 @@ import { RouterLink } from '@angular/router'
 export class AuthComponent {
   isLogging = false
   logInForm!: FormGroup;
+  durationInSeconds!: number
   emailToolTipInstructions = `
   - The email field is required, meaning you must provide an email address.
   - Ensure the email follows the standard format: username@domain.com.
@@ -43,6 +51,7 @@ export class AuthComponent {
   `
 
   constructor(
+    private _snackBar: MatSnackBar,
     private fb: FormBuilder,
     private authService: AuthService
     ) {}
@@ -73,6 +82,7 @@ export class AuthComponent {
   }
 
   onSubmit() {
+    console.log(86);
     if (this.logInForm.valid) {
       this.isLogging = true;
 
@@ -80,9 +90,45 @@ export class AuthComponent {
 
       this.authService.punchIn(email).subscribe({
         next: res => {
-          console.log(res, 83);
+          console.log(res);
+          if (res.notExisting) this.openSnackBar()
         }
       })
     }
   }
+  
+  openSnackBar() {
+    this._snackBar.openFromComponent(FailSnack, {
+      duration: this.durationInSeconds * 1000,
+    });
+  }
 }
+
+
+@Component({
+  selector: 'fail-snack',
+  templateUrl: 'fail-snack.html',
+  styles: [
+    `
+    :host {
+      display: flex;
+    }
+
+    .example-pizza-party {
+      color: hotpink;
+    }
+  `,
+  ],
+  standalone: true,
+  imports: [MatButtonModule, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
+})
+export class FailSnack{
+  snackBarRef = inject(MatSnackBarRef);
+
+  constructor() {}
+
+  close() {
+    this.snackBarRef.dismissWithAction()
+  }
+}
+
