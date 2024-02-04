@@ -42,8 +42,8 @@ export class ServerApp {
   }
 
   private initializeRoutes() {
-    this.app.use("/employee",  employeeRoutes)
     this.app.use("/admin", adminRoutes)
+    this.app.use("/employee",  employeeRoutes)
 
     // Catch-all route handler for invalid routes
     this.app.use((_req: Request, res: Response) => {
