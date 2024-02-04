@@ -1,9 +1,12 @@
 import { CanActivateFn, Router } from "@angular/router";
 import { inject } from "@angular/core";
+import { BrowserInteractionsService } from "../services/browser-interactions.service"
 
 export const authGuard: CanActivateFn = (route, state) => {
+  const browserInteractionsService = inject(BrowserInteractionsService)
+
   // get the token from local storage
-  const token = localStorage.getItem("token");
+  let token = browserInteractionsService.getLocalStorageItem('token')
 
   // if the token exists, return true
   if (token != null) {

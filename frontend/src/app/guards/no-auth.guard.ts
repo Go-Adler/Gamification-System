@@ -1,10 +1,15 @@
-import { inject } from '@angular/core'
+import { afterRender, inject } from '@angular/core'
 import { CanActivateFn, Router } from '@angular/router';
+import { BrowserInteractionsService } from '../services/browser-interactions.service'
 
 export const noAuthGuard: CanActivateFn = (route, state) => {
-    // get the token from local storage
-    const token = localStorage.getItem("token");
 
+  const browserInteractionsService = inject(BrowserInteractionsService)
+
+  // get the token from local storage
+  let token = browserInteractionsService.getLocalStorageItem('token')
+    
+    
     // if the token exists, return true
     if (token == null) {
       return true;
