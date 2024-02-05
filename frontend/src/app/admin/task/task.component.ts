@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router'
 import {MatCardModule} from '@angular/material/card'; 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 
 import { TaskService } from '../task.service'
 import { Activity } from '../../shared/interfaces'
@@ -10,7 +11,7 @@ import { CapitalizePipe } from '../../shared/firstUpper.pipe'
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [MatButtonModule, RouterLink, MatCardModule, CapitalizePipe],
+  imports: [MatButtonModule, RouterLink, MatCardModule, CapitalizePipe, MatProgressSpinnerModule],
   templateUrl: './task.component.html',
   styleUrl: './task.component.scss'
 })
