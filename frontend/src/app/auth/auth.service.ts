@@ -7,7 +7,7 @@ import { LogInResponse, Success } from '../shared/interfaces';
   providedIn: 'root',
 })
 export class AuthService {
-  API_URL: string
+  API_URL
   
   constructor(
     private http: HttpClient,
