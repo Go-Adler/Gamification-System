@@ -21,11 +21,29 @@ export class ActivityDataAccess {
     }
   }
 
+    /**
+   * Check if an activity exists by _id
+   * @param id - The id to check
+   * @returns True if the id exists, false otherwise
+   */
+    async activityExistsById(id: string) {
+      try {
+        const activity = await ActivityEntity.findById(id)
+        console.log(activity, 32);
+        
+        return activity ? true : false
+      } catch (error) {
+        ErrorHandling.processError(
+          "Error in activityExistsById, ActivityDataAccess",
+          error
+        )
+      }
+    }
+
   /**
    * Create a new activity
    * @param name - The name of the activity
    * @param points - The points for the activity
-   * @returns The ID of the created activity
    */
   async createActivity(activityName: string, points: number) {
     try {
@@ -34,9 +52,6 @@ export class ActivityDataAccess {
         activityName,
         points,
       })
-
-      // Return the activity's ID
-      return activity._id ? activity.id : ""
     } catch (error) {
       ErrorHandling.processError(
         "Error in createActivity, ActivityDataAccess",
@@ -44,6 +59,24 @@ export class ActivityDataAccess {
       )
     }
   }
+
+    /**
+   * Edia an activity
+   * @param id - The id of the activity
+   * @param name - The name of the activity
+   * @param points - The points for the activity
+   */
+    async editActivity(id: string, activityName: string, points: number) {
+      try {
+        // Update the activity using the activityEntity model
+        await ActivityEntity.findByIdAndUpdate(id, { activityName, points })
+      } catch (error) {
+        ErrorHandling.processError(
+          "Error in editActivity, ActivityDataAccess",
+          error
+        )
+      }
+    }
 
   /**
    * Get all activities

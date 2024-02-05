@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TaskService } from '../../task.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -45,6 +45,7 @@ export class EditComponent {
     private taskService: TaskService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private router: Router,
     private _snackBar: MatSnackBar
   ) {
     this.activityName = this.route.snapshot.paramMap.get('activityName')!;
@@ -66,26 +67,26 @@ export class EditComponent {
   }
 
   nameValid(): string {
-    const taskFormEmail = this.taskForm.get('name');
+    const taskFormName = this.taskForm.get('name');
     if (
-      taskFormEmail?.invalid &&
-      (taskFormEmail?.dirty || taskFormEmail?.touched)
+      taskFormName?.invalid &&
+      (taskFormName?.dirty || taskFormName?.touched)
     ) {
-      if (taskFormEmail?.errors?.['required']) return 'empty';
-      if (taskFormEmail?.errors?.['pattern']) return 'format';
+      if (taskFormName?.errors?.['required']) return 'empty';
+      if (taskFormName?.errors?.['pattern']) return 'format';
     }
 
     return '';
   }
 
   pointsValid(): string {
-    const taskFormEmail = this.taskForm.get('points');
+    const taskFormPoints = this.taskForm.get('points');
     if (
-      taskFormEmail?.invalid &&
-      (taskFormEmail?.dirty || taskFormEmail?.touched)
+      taskFormPoints?.invalid &&
+      (taskFormPoints?.dirty || taskFormPoints?.touched)
     ) {
-      if (taskFormEmail?.errors?.['required']) return 'empty';
-      if (taskFormEmail?.errors?.['pattern']) return 'format';
+      if (taskFormPoints?.errors?.['required']) return 'empty';
+      if (taskFormPoints?.errors?.['pattern']) return 'format';
     }
 
     return '';
@@ -97,12 +98,12 @@ export class EditComponent {
 
       const { name, points } = this.taskForm.value;
 
-      this.taskService.addTask(name, points).subscribe({
+      this.taskService.editActivity(name, points, this._id).subscribe({
         next: (res) => {
-          if (res.activityExists) this.openSnackBar('Activity already exists');
+          if (res.notExists) this.openSnackBar('Activity not exists');
           else {
-            this.openSnackBar('Activity added');
-            this.taskForm.reset();
+            this.openSnackBar('Activity edit success');
+            this.router.navigateByUrl('/admin/task')
           }
         },
       });
@@ -115,4 +116,14 @@ export class EditComponent {
       duration: this.durationInSeconds * 1000,
     });
   }
+
+  buttonValid():boolean {
+    const taskFormPoints = this.taskForm.get('points');
+    const taskFormName = this.taskForm.get('name');
+
+    
+    if (this.taskForm.valid && (taskFormName?.dirty || taskFormPoints?.dirty) ) return false
+    return true
+  }
+
 }

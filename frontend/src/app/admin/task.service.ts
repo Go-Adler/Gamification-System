@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core';
 import { ConfigService } from '../services/config.service'
-import { AddActivityResponse, FetchActivitiesResponse } from '../shared/interfaces'
+import { AddActivityResponse, EditActivityResponse, FetchActivitiesResponse } from '../shared/interfaces'
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +22,9 @@ export class TaskService {
 
   getAllTasks() {
     return this.http.get<FetchActivitiesResponse>(`${this.API_URL}admin/activities`)
+  }
+
+  editActivity(activityName: string, points: string, _id: string) {
+    return this.http.post<EditActivityResponse>(`${this.API_URL}admin/activity/edit`, { activityName, points, _id })
   }
 }

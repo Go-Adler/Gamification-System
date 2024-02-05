@@ -16,11 +16,27 @@ export class AdminUseCase {
     }
   }
 
+  async activityExistsById(_id: string) {
+    try {
+      return await this.activityDataAccess.activityExistsById(_id)
+    } catch (error) {
+        ErrorHandling.processError("Error in activityExistsById, AdminUseCase", error)
+    }
+  }
+
   async add(name: string, points: number) {
     try {
       return await this.activityDataAccess.createActivity(name, points)
     } catch (error) {
         ErrorHandling.processError("Error in activityExisting, AdminUseCase", error)
+    }
+  }
+
+  async edit(id: string, name: string, points: number) {
+    try {
+      return await this.activityDataAccess.editActivity(id, name, points)
+    } catch (error) {
+        ErrorHandling.processError("Error in edit, AdminUseCase", error)
     }
   }
 

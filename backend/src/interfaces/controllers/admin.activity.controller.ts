@@ -26,6 +26,25 @@ export class ActivityController {
     }
   }
 
+  editActivity = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { activityName, points, _id } = req.body
+
+      // Check if the user exists in the database using the email
+      const activityExists = await this.adminUseCase.activityExistsById(
+        _id
+      )
+
+      if (!activityExists) return res.json({ notExists: true })
+
+      await this.adminUseCase.edit(_id, activityName, points)
+
+      res.json({ message: "Activity edit", success: true })
+    } catch (error) {
+      return next(error)
+    }
+  }
+
   getActivities = async (req: Request, res: Response, next: NextFunction) => {
     try {
 

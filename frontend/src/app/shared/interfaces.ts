@@ -15,6 +15,12 @@ export interface AddActivityResponse {
   success?: boolean
 }
 
+export interface EditActivityResponse {
+  message: string,
+  notExists?: boolean,
+  success?: boolean
+}
+
 export interface Activity {
   _id: string,
   activityName: string,
