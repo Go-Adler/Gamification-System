@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,7 +10,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { TaskService } from '../../task.service'
+import { TaskService } from '../../task.service';
+import {
+  MAT_SNACK_BAR_DATA,
+  MatSnackBar,
+  MatSnackBarAction,
+  MatSnackBarActions,
+  MatSnackBarLabel,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-new',
@@ -28,14 +36,17 @@ import { TaskService } from '../../task.service'
 })
 export class NewComponent {
   taskForm!: FormGroup;
+  durationInSeconds!: number;
+  isLoading = false;
   taskNameToolTipInstructions = `- Required: This field must not be empty.
   - Valid Characters: Only letters (A-Z, a-z), apostrophes ('), spaces, and hyphens (-) are allowed.`;
-  pointToolTipInstructions = `Please enter a two-digit number.`
+  pointToolTipInstructions = `Please enter a two-digit number.`;
 
   constructor(
     private fb: FormBuilder,
+    private _snackBar: MatSnackBar,
     private taskService: TaskService
-    ) {}
+  ) {}
 
   ngOnInit() {
     this.taskForm = this.fb.group({
@@ -72,7 +83,61 @@ export class NewComponent {
 
   onSubmit() {
     if (this.taskForm.valid) {
+      this.isLoading = true;
 
+      const { name, points } = this.taskForm.value;
+
+      this.taskService.addTask(name, points).subscribe({
+        next: (res) => {
+          if (res.activityExists) this.openSnackBar('Activity already exists');
+          else {
+            this.openSnackBar('Activity added');
+            this.taskForm.reset()
+          }
+        },
+      });
     }
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.openFromComponent(FailSnack, {
+      data: { message },
+      duration: this.durationInSeconds * 1000,
+    });
+  }
+}
+
+@Component({
+  selector: 'activity-snack',
+  templateUrl: 'res-snack.html',
+  styles: [
+    `
+      :host {
+        display: flex;
+      }
+
+      .example-pizza-party {
+        color: hotpink;
+      }
+    `,
+  ],
+  standalone: true,
+  imports: [
+    MatButtonModule,
+    MatSnackBarLabel,
+    MatSnackBarActions,
+    MatSnackBarAction,
+  ],
+})
+export class FailSnack {
+  snackBarRef = inject(MatSnackBarRef);
+  message
+
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {
+    this.message = data.message
+  }
+
+  close() {
+    this.snackBarRef.dismissWithAction();
   }
 }

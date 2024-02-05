@@ -5,3 +5,8 @@ export interface Employee extends Document {
   name: string,
   activities: Types.ObjectId[]
 }
+
+export interface Acitivity extends Document {
+  activityName: string,
+  points: number,
+}

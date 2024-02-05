@@ -23,5 +23,4 @@ export class EmployeeUseCase {
         ErrorHandling.processError("Error in employeeExisting, EmployeeUseCase", error)
     }
   }
-
 }
