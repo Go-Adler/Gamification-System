@@ -14,3 +14,12 @@ export interface AddActivityResponse {
   activityExists?: boolean,
   success?: boolean
 }
+
+export interface Activity {
+  activityName: string,
+  points: number,
+}
+
+export interface FetchActivitiesResponse {
+  activities: Activity[]
+}

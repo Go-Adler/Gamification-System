@@ -6,9 +6,12 @@ import {
   provideHttpClient,
   withInterceptors,
 } from "@angular/common/http";
+import { inject } from "@angular/core"
 import { Observable, tap } from "rxjs";
+import { BrowserInteractionsService } from "./browser-interactions.service"
 
 export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
+  const browserInteractionsService = inject(BrowserInteractionsService)
   return next(req).pipe(
     tap((event) => {
       if (event.type === HttpEventType.Response) {
@@ -16,7 +19,7 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (responseBody?.token) {
           const token = responseBody.token;
-          localStorage.setItem("token", token);
+          browserInteractionsService.setLocalStorageItem('token', token)
         }
       }
     })
@@ -24,7 +27,9 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 export const headerInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('token'); 
+  const browserInteractionsService = inject(BrowserInteractionsService)
+
+  const token = browserInteractionsService.getLocalStorageItem('token')
   // clone the request and set the new header
   if (token) {
     const reqWithHeader = req.clone({

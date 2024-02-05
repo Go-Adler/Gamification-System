@@ -44,4 +44,20 @@ export class ActivityDataAccess {
       )
     }
   }
+
+  /**
+   * Get all activities
+   * @returns All activities
+   */
+  async getAllActivities() {
+    try {
+      // Get all activities
+      return await ActivityEntity.find({})
+    } catch (error) {
+      ErrorHandling.processError(
+        "Error in getAllActivities, ActivityDataAccess",
+        error
+      )
+    }
+  }
 }

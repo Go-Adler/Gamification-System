@@ -13,4 +13,9 @@ export class BrowserInteractionsService {
     if (localStorage) return localStorage.getItem(key)
     return null
   }
+
+  setLocalStorageItem(key: string, value: string): void {
+    const localStorage = this.document.defaultView?.localStorage
+    if (localStorage) localStorage.setItem(key, value)
+  }
 }

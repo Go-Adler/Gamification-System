@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-import { Acitivity } from "../shared/interfaces";
+import { Activity } from "../shared/interfaces";
 
-const activitySchema = new mongoose.Schema<Acitivity>({
+const activitySchema = new mongoose.Schema<Activity>({
   activityName: {
     type: String,
     required: true
@@ -13,4 +13,4 @@ const activitySchema = new mongoose.Schema<Acitivity>({
   },
 })
 
-export const ActivityEntity = mongoose.model<Acitivity>('Activities', activitySchema)
+export const ActivityEntity = mongoose.model<Activity>('Activities', activitySchema)

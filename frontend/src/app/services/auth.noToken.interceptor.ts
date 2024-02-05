@@ -9,11 +9,13 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { BrowserInteractionsService } from './browser-interactions.service'
 // import { LogOutService } from '../user/auth/log-in/log-out.service';
 
 @Injectable()
 export class LogoutInterceptor implements HttpInterceptor {
   constructor(private router: Router, 
+    private browserInteractionsService: BrowserInteractionsService
     // private logOutService: LogOutService
     ) {}
 
@@ -29,7 +31,7 @@ export class LogoutInterceptor implements HttpInterceptor {
   
               if (responseBody.token) {
                 const token = responseBody.token;
-                localStorage.setItem('token', token);
+                this.browserInteractionsService.setLocalStorageItem('token', token)
               }
   
               if (responseBody.invalidToken) {

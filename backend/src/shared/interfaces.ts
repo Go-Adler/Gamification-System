@@ -6,7 +6,7 @@ export interface Employee extends Document {
   activities: Types.ObjectId[]
 }
 
-export interface Acitivity extends Document {
+export interface Activity extends Document {
   activityName: string,
   points: number,
 }

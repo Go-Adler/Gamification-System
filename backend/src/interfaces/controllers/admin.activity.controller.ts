@@ -15,7 +15,7 @@ export class ActivityController {
       const activityExists = await this.adminUseCase.activityExists(
         activityName.toLowerCase()
       )
-      
+
       if (activityExists) return res.json({ activityExists: true })
 
       await this.adminUseCase.add(activityName.toLowerCase(), points)
@@ -26,21 +26,13 @@ export class ActivityController {
     }
   }
 
-  // employeeAdd= async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const { email, name } = req.body
+  getActivities = async (req: Request, res: Response, next: NextFunction) => {
+    try {
 
-  //     // Check if the user exists in the database using the email
-  //     const isEmployeeExists = await this.employeeUseCase.employeeExisting(email.toLowerCase())
-
-  //     if (isEmployeeExists) res.json({ employeeExists: true })
-
-  //     await this.employeeUseCase.add(email, name)
-
-  //     res.json({ message: 'Registration success', success: true })
-
-  //   } catch (error) {
-
-  //   }
-  // }
+      const activities = await this.adminUseCase.getAllActivities()
+      res.json({ activities })
+    } catch (error) {
+      return next(error)
+    }
+  }
 }

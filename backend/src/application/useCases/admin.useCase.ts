@@ -23,4 +23,12 @@ export class AdminUseCase {
         ErrorHandling.processError("Error in activityExisting, AdminUseCase", error)
     }
   }
+
+  async getAllActivities() {
+    try {
+      return await this.activityDataAccess.getAllActivities()
+    } catch (error) {
+        ErrorHandling.processError("Error in getAllActivities, AdminUseCase", error)
+    }
+  }
 }
