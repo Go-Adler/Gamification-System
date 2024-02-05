@@ -1,5 +1,8 @@
 import { EmployeeDataAccess } from "../../data/employee.dataAccess"
+import { ActivityFinishedEntity } from "../../domain/activities.schema"
 import { ErrorHandling } from "../../utils/errorHandling"
+import { UserRanking } from "../../shared/interfaces"
+import mongoose from "mongoose"
 
 export class EmployeeUseCase {
   private employeeDataAccess: EmployeeDataAccess
@@ -12,7 +15,10 @@ export class EmployeeUseCase {
     try {
       return await this.employeeDataAccess.employeeExists(email)
     } catch (error) {
-        ErrorHandling.processError("Error in employeeExisting, EmployeeUseCase", error)
+      ErrorHandling.processError(
+        "Error in employeeExisting, EmployeeUseCase",
+        error
+      )
     }
   }
 
@@ -20,13 +26,24 @@ export class EmployeeUseCase {
     try {
       return await this.employeeDataAccess.createUser(email, name)
     } catch (error) {
-        ErrorHandling.processError("Error in add, EmployeeUseCase", error)
+      ErrorHandling.processError("Error in add, EmployeeUseCase", error)
     }
   }
 
   async addActivity(employeeId: string, activityId: string) {
     try {
-      return await this.employeeDataAccess.createActivity(employeeId, activityId)
+      return await this.employeeDataAccess.createActivity(
+        employeeId,
+        activityId
+      )
+    } catch (error) {
+      ErrorHandling.processError("Error in addActivity, EmployeeUseCase", error)
+    }
+  }
+
+  async getRanking(month: number, year: number) {
+    try {
+      return await this.employeeDataAccess.getRanking(month, year)
     } catch (error) {
       ErrorHandling.processError("Error in addActivity, EmployeeUseCase", error)
     }

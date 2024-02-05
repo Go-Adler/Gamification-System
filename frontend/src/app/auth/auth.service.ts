@@ -8,12 +8,21 @@ import { LogInResponse, Success } from '../shared/interfaces';
 })
 export class AuthService {
   API_URL
+  userEmail: string = ''
   
   constructor(
     private http: HttpClient,
     private configService: ConfigService
   ) {
     this.API_URL = this.configService.getAPI_BaseURL();
+  }
+
+  addEmail(email: string) {
+    this.userEmail = email
+  }
+
+  removeEmail() { 
+    this.userEmail = ''
   }
 
   punchIn(email: string) {

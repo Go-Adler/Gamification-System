@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import { Types, Document } from "mongoose"
 
 export interface Employee extends Document {
@@ -17,4 +18,10 @@ export interface ActivityFinished extends Document {
   points: number,
   employeeId: Types.ObjectId,
   date: Date,
+}
+
+
+export interface UserRanking {
+  _id: mongoose.Types.ObjectId;
+  totalPoints: number;
 }

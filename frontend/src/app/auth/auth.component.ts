@@ -85,7 +85,6 @@ export class AuthComponent {
   }
 
   onSubmit() {
-    console.log(86);
     if (this.logInForm.valid) {
       this.isLogging = true;
 
@@ -94,6 +93,7 @@ export class AuthComponent {
       this.subscription = this.authService.punchIn(email).subscribe({
         next: res => {
           if (res.notExisting) this.openSnackBar()
+          this.authService.addEmail(email)
           this.router.navigateByUrl('/home')
         }
       })

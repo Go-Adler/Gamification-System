@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core';
 import { ConfigService } from '../services/config.service'
-import { AddActivityResponse, EditActivityResponse, FetchActivitiesResponse, FinishResponse } from '../shared/interfaces'
+import { AddActivityResponse, EditActivityResponse, FetchActivitiesResponse, FinishResponse, RankingResponse } from '../shared/interfaces'
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,11 @@ export class TaskService {
 
   finishTask(_id: string) {
     return this.http.post<FinishResponse>(`${this.API_URL}employee/task/finish`, { _id })
+  }
+
+  getRanking(month: number, year: number) {
+    console.log(month, 36);
+    
+    return this.http.post<RankingResponse>(`${this.API_URL}employee/ranking`, { month, year })
   }
 }

@@ -2,7 +2,7 @@
   <div class="md:w-8/12 w-11/12 lg:w-4/12 mt-6 flex flex-col gap-10">
     <!-- top -->
     <div class="flex justify-center w-full flex-col items-start">
-      <button mat-button color="primary" [routerLink]="['/admin/task']">
+      <button mat-button color="primary" (click)="back()">
         <div class="flex items-center gap-2">
           <span class="material-symbols-rounded text-sm"> arrow_back_ios </span
           >Go back

@@ -111,7 +111,10 @@ export class EditComponent {
       });
     }
   }
-
+  
+  back() {
+    this.router.navigateByUrl('/admin/task')
+  }
   openSnackBar(message: string) {
     this._snackBar.openFromComponent(FailSnack, {
       data: { message },
@@ -129,6 +132,6 @@ export class EditComponent {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+    if (this.subscription) this.subscription.unsubscribe()
   }
 }

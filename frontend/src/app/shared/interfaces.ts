@@ -36,3 +36,13 @@ export interface Activity {
 export interface FetchActivitiesResponse {
   activities: Activity[]
 }
+
+export interface RankingResponse {
+  ranking: Ranking[];
+}
+
+export interface Ranking {
+  totalPoints: number;
+  employeeId: string;
+  name: string;
+}

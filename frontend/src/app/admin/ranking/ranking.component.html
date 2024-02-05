@@ -1,0 +1,38 @@
+<div class="flex justify-center w-full pt-10 flex-col items-center">
+  <div class="w-6/12 md:w-4/12 lg:w-1/12">
+    <img src="/assets/images/Reward.png" alt="" />
+  </div>
+  <div class="mb-4 text-xl mt-10 text-orange-400">Ranking</div>
+  <div class="w-6/12 flex justify-end">
+    <mat-form-field>
+      <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="date">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp
+                      startView="multi-year"
+                      (yearSelected)="chosenYearHandler($event)"
+                      (monthSelected)="chosenMonthHandler($event, dp)"
+                      panelClass="example-month-picker">
+      </mat-datepicker>
+    </mat-form-field>
+    
+  </div>
+
+  <div class="w-6/12 flex flex-col gap-2">
+    @for (item of ranking; track item.employeeId; let idx = $index) {
+    <mat-card>
+      <div class="flex justify-between w-full p-6 cursor-pointer">
+        <div class="flex gap-2">
+          <div>{{ idx + 1 }}.</div>
+          <div>{{ item.name | capitalize }}</div>
+        </div>
+        <div class="flex gap-2 items-center">
+          <span class="material-symbols-rounded text-lg text-yellow-400">
+            stars
+          </span>
+          <div>{{ item.totalPoints }}</div>
+        </div>
+      </div>
+    </mat-card>
+    }
+  </div>
+</div>

@@ -58,9 +58,6 @@ export class EmployeeAuthController {
       const { _id } = req.body 
       const { userId } = req.user as JwtPayload
 
-      console.log(userId, 61);
-      
-
        // Check if the activity exists in the database using the email
        const activityExists = await this.adminUseCase.activityExistsById(
         _id
@@ -71,6 +68,18 @@ export class EmployeeAuthController {
       await this.employeeUseCase.addActivity(userId, _id)
 
       res.json({ message: 'Finish success', success: true })
+      
+    } catch (error) {
+      return next(error)
+    }
+  }
+
+  getRanking = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { month, year } = req.body
+
+       const ranking = await this.employeeUseCase.getRanking(month, year)
+       res.json({ ranking })
       
     } catch (error) {
       return next(error)

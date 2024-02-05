@@ -61,6 +61,7 @@ export class EmployeeDataAccess {
     try {
       let activityName!: string, points!: number
 
+      await  EmployeeEntity.findByIdAndUpdate(employeeId, { $push: { activities: activityId }})
       const activity = await this.activityDataAccess.getActivity(activityId)
       if (activity) {
         activityName = activity.activityName
@@ -81,4 +82,65 @@ export class EmployeeDataAccess {
       )
     }
   }
+
+  /**
+   * Get ranking
+   */
+  async getRanking(month: number, year: number) {
+    try {
+      const result = await ActivityFinishedEntity.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                { $eq: [{ $month: "$date" }, month] },
+                { $eq: [{ $year: "$date" }, year] },
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: "$employeeId",
+            totalPoints: { $sum: "$points" },
+          },
+        },
+        {
+          $sort: { totalPoints: -1 },
+        },
+        {
+          $lookup: {
+            from: "employees",
+            localField: "_id",
+            foreignField: "_id",
+            as: "employeeDetails",
+          },
+        },
+        {
+          $unwind: "$employeeDetails",
+        },
+        {
+          $project: {
+            _id: 0,
+            employeeId: "$_id",
+            name: "$employeeDetails.name",
+            totalPoints: 1,
+          },
+        },
+      ]);
+  
+      // result will contain an array of objects with _id (employeeId) and totalPoints
+  
+      return result
+    } catch (error) {
+      ErrorHandling.processError(
+        "Error in createUser, employeeDataAccess",
+        error
+      )
+    }
+  }
+
+  
+
+
 }

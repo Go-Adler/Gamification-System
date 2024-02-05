@@ -1,7 +1,12 @@
 <mat-toolbar>
   <div class="flex justify-between w-full items-center">
-    <span>Employee</span>
+    <div class="flex gap-2 items-center">
+      <span>Employee</span>
+      <div class="text-sm">({{ email }})</div>
+    </div>
 
-    <span class="material-symbols-rounded cursor-pointer" (click)="logOut()"> logout </span>
+    <span class="material-symbols-rounded cursor-pointer" (click)="logOut()">
+      logout
+    </span>
   </div>
 </mat-toolbar>
