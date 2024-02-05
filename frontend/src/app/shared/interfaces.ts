@@ -16,6 +16,7 @@ export interface AddActivityResponse {
 }
 
 export interface Activity {
+  _id: string,
   activityName: string,
   points: number,
 }

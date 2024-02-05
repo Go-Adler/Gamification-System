@@ -1,0 +1,80 @@
+<div class="flex justify-center h-full">
+  <div class="md:w-8/12 w-11/12 lg:w-4/12 mt-6 flex flex-col gap-10">
+    <!-- top -->
+    <div class="flex justify-center w-full flex-col items-start">
+      <button mat-button color="primary" [routerLink]="['/admin/task']">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-rounded text-sm"> arrow_back_ios </span
+          >Go back
+        </div>
+      </button>
+      <div class="flex justify-center">
+        <img class="w-6/12 lg:w-4/12" src="/assets/images/Edit.png" alt="" />
+      </div>
+    </div>
+
+    <!-- Div area -->
+    <div class="flex flex-col gap-4">
+      <div class="text-lg w-full flex justify-center">Edit activity</div>
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="">
+        <!-- Task name -->
+        <div>
+          <mat-form-field
+            appearance="fill"
+            class="w-full"
+            hideRequiredMarker="true"
+          >
+            <mat-label>Activity name</mat-label>
+            <input matInput formControlName="name" />
+            @if (nameValid() === 'empty') {
+            <mat-error> Activity name cannot be empty </mat-error>
+            } @else if (nameValid() === 'format') {
+            <mat-error
+              >Please input activity name in the correct
+              <span
+                class="underline cursor-pointer"
+                [matTooltip]="taskNameToolTipInstructions"
+                >format</span
+              >.</mat-error
+            >
+            }
+          </mat-form-field>
+        </div>
+
+        <!--  Points -->
+        <div>
+          <mat-form-field
+            appearance="fill"
+            class="w-full"
+            hideRequiredMarker="true"
+          >
+            <mat-label>Points</mat-label>
+            <input matInput formControlName="points" />
+            @if (pointsValid() === 'empty') {
+            <mat-error> Points cannot be empty </mat-error>
+            } @else if (pointsValid() === 'format') {
+            <mat-error
+              >Please input points in the correct
+              <span
+                class="underline cursor-pointer"
+                [matTooltip]="pointToolTipInstructions"
+                >format</span
+              >.</mat-error
+            >
+            }
+          </mat-form-field>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full mt-2"
+          mat-raised-button
+          color="primary"
+          [disabled]="!taskForm.valid"
+        >
+          Edit activity
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

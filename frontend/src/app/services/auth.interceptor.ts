@@ -1,13 +1,9 @@
 import {
-  HttpEvent,
   HttpEventType,
   HttpInterceptorFn,
-  HttpRequest,
-  provideHttpClient,
-  withInterceptors,
 } from "@angular/common/http";
 import { inject } from "@angular/core"
-import { Observable, tap } from "rxjs";
+import { tap } from "rxjs";
 import { BrowserInteractionsService } from "./browser-interactions.service"
 
 export const loggingInterceptor: HttpInterceptorFn = (req, next) => {

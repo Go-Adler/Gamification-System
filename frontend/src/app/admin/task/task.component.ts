@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import {MatCardModule} from '@angular/material/card'; 
 
 import { TaskService } from '../task.service'
@@ -16,7 +16,10 @@ import { CapitalizePipe } from '../../shared/firstUpper.pipe'
 })
 export class TaskComponent {
   activities: Activity[] = []
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private router: Router
+    ) {}
   
   ngOnInit() {
     this.taskService.getAllTasks().subscribe({
@@ -24,5 +27,9 @@ export class TaskComponent {
         this.activities = [...this.activities, ...res.activities]
       }
     })
+  }
+
+  navigateToEdit(activity: Activity) {
+    this.router.navigate(['/admin/task/edit/', activity._id, activity])
   }
 }
