@@ -29,12 +29,27 @@ export class ActivityDataAccess {
     async activityExistsById(id: string) {
       try {
         const activity = await ActivityEntity.findById(id)
-        console.log(activity, 32);
         
         return activity ? true : false
       } catch (error) {
         ErrorHandling.processError(
           "Error in activityExistsById, ActivityDataAccess",
+          error
+        )
+      }
+    }
+
+     /**
+   * Get activity
+   * @param id - The id to get
+   * @returns activity
+   */
+     async getActivity(id: string) {
+      try {
+        return await ActivityEntity.findById(id)
+      } catch (error) {
+        ErrorHandling.processError(
+          "Error in getActivity, ActivityDataAccess",
           error
         )
       }

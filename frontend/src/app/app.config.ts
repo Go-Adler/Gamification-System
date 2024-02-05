@@ -9,6 +9,7 @@ import { headerInterceptor, loggingInterceptor } from './services/auth.intercept
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
     provideAnimationsAsync(),

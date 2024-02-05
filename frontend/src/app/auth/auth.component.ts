@@ -19,6 +19,7 @@ import {
   MatSnackBarLabel,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs'
 
 
 @Component({
@@ -40,6 +41,7 @@ export class AuthComponent {
   isLogging = false
   logInForm!: FormGroup;
   durationInSeconds!: number
+  subscription!: Subscription
   emailToolTipInstructions = `
   - The email field is required, meaning you must provide an email address.
   - Ensure the email follows the standard format: username@domain.com.
@@ -54,7 +56,7 @@ export class AuthComponent {
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
     ) {}
 
   ngOnInit() {
@@ -89,7 +91,7 @@ export class AuthComponent {
 
       const { email } = this.logInForm.value
 
-      this.authService.punchIn(email).subscribe({
+      this.subscription = this.authService.punchIn(email).subscribe({
         next: res => {
           if (res.notExisting) this.openSnackBar()
           this.router.navigateByUrl('/home')
@@ -102,6 +104,10 @@ export class AuthComponent {
     this._snackBar.openFromComponent(FailSnack, {
       duration: this.durationInSeconds * 1000,
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe()
   }
 }
 

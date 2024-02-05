@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-edit',
@@ -33,6 +34,7 @@ import { MatButtonModule } from '@angular/material/button'
 export class EditComponent {
   taskForm!: FormGroup;
   durationInSeconds!: number;
+  subscription!: Subscription
   isLoading = false;
   taskNameToolTipInstructions = `- Required: This field must not be empty.
   - Valid Characters: Only letters (A-Z, a-z), apostrophes ('), spaces, and hyphens (-) are allowed.`;
@@ -46,7 +48,7 @@ export class EditComponent {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
   ) {
     this.activityName = this.route.snapshot.paramMap.get('activityName')!;
     this.points = this.route.snapshot.paramMap.get('points')!;
@@ -98,7 +100,7 @@ export class EditComponent {
 
       const { name, points } = this.taskForm.value;
 
-      this.taskService.editActivity(name, points, this._id).subscribe({
+      this.subscription = this.taskService.editActivity(name, points, this._id).subscribe({
         next: (res) => {
           if (res.notExists) this.openSnackBar('Activity not exists');
           else {
@@ -126,4 +128,7 @@ export class EditComponent {
     return true
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
 }

@@ -19,6 +19,7 @@ import {
   MatSnackBarLabel,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-new',
@@ -41,11 +42,12 @@ export class NewComponent {
   taskNameToolTipInstructions = `- Required: This field must not be empty.
   - Valid Characters: Only letters (A-Z, a-z), apostrophes ('), spaces, and hyphens (-) are allowed.`;
   pointToolTipInstructions = `Please enter a two-digit number.`;
+  subscription!: Subscription
 
   constructor(
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
-    private taskService: TaskService
+    private taskService: TaskService,
   ) {}
 
   ngOnInit() {
@@ -87,7 +89,7 @@ export class NewComponent {
 
       const { name, points } = this.taskForm.value;
 
-      this.taskService.addTask(name, points).subscribe({
+      this.subscription = this.taskService.addTask(name, points).subscribe({
         next: (res) => {
           if (res.activityExists) this.openSnackBar('Activity already exists');
           else {
@@ -104,6 +106,10 @@ export class NewComponent {
       data: { message },
       duration: this.durationInSeconds * 1000,
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 }
 

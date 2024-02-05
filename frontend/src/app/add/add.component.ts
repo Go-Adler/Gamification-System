@@ -14,6 +14,7 @@ import {
   MatSnackBarLabel,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-add',
@@ -45,11 +46,12 @@ export class AddComponent {
   `
   nameToolTipInstructions = `- Required: This field must not be empty.
   - Valid Characters: Only letters (A-Z, a-z), apostrophes ('), spaces, and hyphens (-) are allowed.`
+  subscription!: Subscription
 
   constructor(
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
     ) {}
 
   ngOnInit() {
@@ -97,7 +99,7 @@ export class AddComponent {
 
       const { email, name } = this.registerForm.value
 
-      this.authService.register(email, name).subscribe({
+      this.subscription = this.authService.register(email, name).subscribe({
         next: res => {
           if (res.success) this.openSnackBar()
         }
@@ -109,6 +111,10 @@ export class AddComponent {
     this._snackBar.openFromComponent(PizzaPartyAnnotatedComponent, {
       duration: this.durationInSeconds * 1000,
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 }
 

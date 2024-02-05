@@ -10,3 +10,11 @@ export interface Activity extends Document {
   activityName: string,
   points: number,
 }
+
+export interface ActivityFinished extends Document {
+  activityName: string,
+  activityId: Types.ObjectId,
+  points: number,
+  employeeId: Types.ObjectId,
+  date: Date,
+}

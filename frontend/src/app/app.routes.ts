@@ -8,6 +8,7 @@ import { AdminComponent } from './admin/admin.component'
 import { TaskComponent } from './admin/task/task.component'
 import { NewComponent } from './admin/task/new/new.component'
 import { EditComponent } from './admin/task/edit/edit.component'
+import { FinishComponent } from './finish/finish.component'
 
 export const routes: Routes = [
   { 
@@ -29,6 +30,11 @@ export const routes: Routes = [
     path: 'home',
     canActivate: [authGuard],
     component: HomeComponent
+  },
+  {
+    path: 'finish/:id',
+    canActivate: [authGuard],
+    component: FinishComponent,
   },
   {
     path: 'admin',

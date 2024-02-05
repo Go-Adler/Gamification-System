@@ -21,6 +21,12 @@ export interface EditActivityResponse {
   success?: boolean
 }
 
+export interface FinishResponse {
+  message: string,
+  taskNotExists?: boolean,
+  success?: boolean
+}
+
 export interface Activity {
   _id: string,
   activityName: string,

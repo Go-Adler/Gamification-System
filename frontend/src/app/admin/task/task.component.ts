@@ -7,6 +7,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { TaskService } from '../task.service'
 import { Activity } from '../../shared/interfaces'
 import { CapitalizePipe } from '../../shared/firstUpper.pipe'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-task',
@@ -16,14 +17,15 @@ import { CapitalizePipe } from '../../shared/firstUpper.pipe'
   styleUrl: './task.component.scss'
 })
 export class TaskComponent {
+  subscription!: Subscription
   activities: Activity[] = []
   constructor(
     private taskService: TaskService,
-    private router: Router
+    private router: Router,
     ) {}
   
   ngOnInit() {
-    this.taskService.getAllTasks().subscribe({
+    this.subscription = this.taskService.getAllTasks().subscribe({
       next: res => {
         this.activities = [...this.activities, ...res.activities]
       }
@@ -32,5 +34,9 @@ export class TaskComponent {
 
   navigateToEdit(activity: Activity) {
     this.router.navigate(['/admin/task/edit/', activity._id, activity])
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 }

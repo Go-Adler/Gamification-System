@@ -1,14 +1,20 @@
 import { NextFunction, Request, Response } from "express"
 import { EmployeeUseCase } from "../../application/useCases/employee.useCase"
 import { TokenUseCase } from "../../application/useCases/employee.token.useCase"
+import { AdminUseCase } from "../../application/useCases/admin.useCase"
+import { JwtPayload } from "jsonwebtoken"
+
 
 export class EmployeeAuthController {
   private employeeUseCase: EmployeeUseCase
   private tokenUseCase: TokenUseCase
+  private adminUseCase: AdminUseCase
+
   
   constructor() {
     this.employeeUseCase = new EmployeeUseCase()
     this.tokenUseCase = new TokenUseCase()
+    this.adminUseCase = new AdminUseCase()
   }
 
   employeeLogin = async (req: Request, res: Response, next: NextFunction) => {
@@ -17,14 +23,14 @@ export class EmployeeAuthController {
 
       // Check if the user exists in the database using the email
       const isEmployee = await this.employeeUseCase.employeeExisting(email.toLowerCase())
-      if (!isEmployee) res.json({ notExisting: true })
+      if (!isEmployee) return res.json({ notExisting: true })
       
-      const token = this.tokenUseCase.generateTokenWithUserId(email)
+      const token = this.tokenUseCase.generateTokenWithUserId(isEmployee)
 
       res.json({ message: 'Loging success', token })
       
     } catch (error) {
-
+      return next(error)
     }
   }
 
@@ -35,16 +41,39 @@ export class EmployeeAuthController {
       // Check if the user exists in the database using the email
       const isEmployeeExists = await this.employeeUseCase.employeeExisting(email.toLowerCase())
       
-      if (isEmployeeExists) res.json({ employeeExists: true })
+      if (isEmployeeExists) return res.json({ employeeExists: true })
 
       await this.employeeUseCase.add(email, name)
 
       res.json({ message: 'Registration success', success: true })
       
+    } catch (error) {
+      return next(error)
+    }
+  }
 
+  finishTask= async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      
+      const { _id } = req.body 
+      const { userId } = req.user as JwtPayload
+
+      console.log(userId, 61);
+      
+
+       // Check if the activity exists in the database using the email
+       const activityExists = await this.adminUseCase.activityExistsById(
+        _id
+      )
+      
+      if (!activityExists) return res.json({ taskNotExists: true })
+
+      await this.employeeUseCase.addActivity(userId, _id)
+
+      res.json({ message: 'Finish success', success: true })
       
     } catch (error) {
-
+      return next(error)
     }
   }
 }

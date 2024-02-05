@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
 
 export class TokenUseCase {
-  generateTokenWithUserId(email: string): string {
+  generateTokenWithUserId(userId: string): string {
     const secretKey = process.env.JWT_SECRET_KEY!
     
-    const token = jwt.sign({ email }, secretKey, {
+    const token = jwt.sign({ userId }, secretKey, {
       expiresIn: '1h',
     })
     return token

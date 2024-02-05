@@ -18,4 +18,9 @@ export class BrowserInteractionsService {
     const localStorage = this.document.defaultView?.localStorage
     if (localStorage) localStorage.setItem(key, value)
   }
+
+  clearLocalStorageItem(): void {
+    const localStorage = this.document.defaultView?.localStorage
+    if (localStorage) localStorage.clear()
+  }
 }

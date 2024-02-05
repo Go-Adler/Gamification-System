@@ -19,11 +19,12 @@ export class JwtMiddleware {
       // Extract the Authorization header
       const authHeader = req.header("Authorization")
 
+      
       // Check if Authorization header is missing
       if (!authHeader) {
         return res.status(401).json({ message: "Access denied. No token provided." })
       }
-
+      
       // Extract token from the Authorization header
       const token = authHeader.split(" ")[1]
 
@@ -31,14 +32,17 @@ export class JwtMiddleware {
       if (!token) {
         return res.status(401).json({ message: "Access denied. No token provided." })
       }
+
       // Verify the token using the provided secret key
       const decoded = jwt.verify(token, secretKey) as JwtPayload
 
+      
       // Attach the decoded user information to the request object
       req.user = decoded
-      
+
       next()
     } catch (error) {
+      
       // Handle token verification errors
       return res.json({ invalidToken: true })
     }

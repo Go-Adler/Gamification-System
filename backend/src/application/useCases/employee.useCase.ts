@@ -20,7 +20,15 @@ export class EmployeeUseCase {
     try {
       return await this.employeeDataAccess.createUser(email, name)
     } catch (error) {
-        ErrorHandling.processError("Error in employeeExisting, EmployeeUseCase", error)
+        ErrorHandling.processError("Error in add, EmployeeUseCase", error)
+    }
+  }
+
+  async addActivity(employeeId: string, activityId: string) {
+    try {
+      return await this.employeeDataAccess.createActivity(employeeId, activityId)
+    } catch (error) {
+      ErrorHandling.processError("Error in addActivity, EmployeeUseCase", error)
     }
   }
 }

@@ -1,4 +1,28 @@
-<div class="bg-green-400">
-  <p>home works!</p>
-
-</div>
+<app-user-tool-bar></app-user-tool-bar>
+@if (!activities) {
+  <div class="flex justify-center items-center h-full w-full">
+    <mat-spinner strokeWidth="6" diameter="44"></mat-spinner>
+  </div>
+} @else {
+  <div class="flex justify-center">
+    <div class="w-10/12 lg:w-5/12">
+      <div class="w-6/12 md:w-4/12 lg:w-3/12"><img src="/assets/images/Tasks list.png" alt=""></div>
+      
+      <div class="mb-4 text-lg">Choose an activity to complete</div>
+      @for (activity of activities; track activity.activityName; let idx = $index) {
+        <mat-card class="mb-2 p-6 cursor-pointer" (click)="navigateToEdit(activity)">
+          <div class="flex justify-between">
+            <div class="flex gap-2 items-end">
+              <div>{{ idx + 1 }}.</div><div>{{ activity.activityName | capitalize }}</div>
+            </div>
+            <div class="flex gap-2 items-center"><span class="material-symbols-rounded text-lg text-yellow-400">
+              stars
+              </span><div>{{ activity.points }}</div></div>
+          </div>
+        </mat-card>
+      }
+      
+    </div>
+  </div>
+  
+}
