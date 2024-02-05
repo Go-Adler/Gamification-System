@@ -47,7 +47,7 @@ export const routes: Routes = [
         component: RankingComponent
       },
       {
-        path: 'employee-details',
+        path: 'employee-details/:id',
         component: EmployeeDetailsComponent
       },
       {

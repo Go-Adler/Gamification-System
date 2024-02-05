@@ -1,8 +1,5 @@
 import { EmployeeDataAccess } from "../../data/employee.dataAccess"
-import { ActivityFinishedEntity } from "../../domain/activities.schema"
 import { ErrorHandling } from "../../utils/errorHandling"
-import { UserRanking } from "../../shared/interfaces"
-import mongoose from "mongoose"
 
 export class EmployeeUseCase {
   private employeeDataAccess: EmployeeDataAccess
@@ -14,6 +11,17 @@ export class EmployeeUseCase {
   async employeeExisting(email: string) {
     try {
       return await this.employeeDataAccess.employeeExists(email)
+    } catch (error) {
+      ErrorHandling.processError(
+        "Error in employeeExisting, EmployeeUseCase",
+        error
+      )
+    }
+  }
+
+  async details(id: string) {
+    try {
+      return await this.employeeDataAccess.getDetails(id)
     } catch (error) {
       ErrorHandling.processError(
         "Error in employeeExisting, EmployeeUseCase",

@@ -85,4 +85,15 @@ export class EmployeeAuthController {
       return next(error)
     }
   }
+
+  getDetails = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.body
+       const { employee, activities } = await this.employeeUseCase.details(id)
+       res.json({ employee, activities })
+      
+    } catch (error) {
+      return next(error)
+    }
+  }
 }

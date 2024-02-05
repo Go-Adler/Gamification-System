@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   MatMomentDateModule,
-  provideMomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
@@ -17,7 +16,6 @@ import { TaskService } from '../task.service';
 import { Ranking } from '../../shared/interfaces';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
-import { formatDate } from '@angular/common';
 import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
@@ -27,6 +25,7 @@ import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
+import { Router } from '@angular/router'
 
 export const MY_FORMATS = {
   parse: {
@@ -76,7 +75,8 @@ export class RankingComponent implements OnInit {
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -87,8 +87,6 @@ export class RankingComponent implements OnInit {
 
     this.taskService.getRanking(this.month, this.year).subscribe({
       next: (res) => {
-        console.log(res.ranking);
-
         this.ranking = [...this.ranking, ...res.ranking];
       },
     });
@@ -129,10 +127,12 @@ export class RankingComponent implements OnInit {
     datepicker.close();
     this.taskService.getRanking(this.month, this.year).subscribe({
       next: (res) => {
-        console.log(res.ranking);
-
         this.ranking = [...res.ranking];
       },
     });
+  }
+
+  goToBreakDown(id: string) {
+    this.router.navigate(['/admin/employee-details/', id])
   }
 }

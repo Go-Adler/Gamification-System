@@ -2,6 +2,7 @@ import { ErrorHandling } from "../utils/errorHandling"
 import { EmployeeEntity } from "../domain/employee.schema"
 import { ActivityFinishedEntity } from "../domain/activities.schema"
 import { ActivityDataAccess } from "./activity.dataAccess"
+import { ActivityEntity } from "../domain/activity.schema"
 
 export class EmployeeDataAccess {
   private activityDataAccess: ActivityDataAccess
@@ -26,6 +27,26 @@ export class EmployeeDataAccess {
       )
     }
   }
+
+    /**
+   * Get employee details
+   * @param id - The id to check
+   * @returns details
+   */
+    async getDetails(id: string) {
+      try {
+        const employee = await EmployeeEntity.findById(id)
+        const activities = await ActivityFinishedEntity.find({ employeeId: id })
+        return { employee, activities }
+      } catch (error) {
+        ErrorHandling.processError(
+          "Error in employeeExists, EmployeeDataAccess",
+          error
+        )
+      }
+    }
+  
+
 
   /**
    * Create a new user

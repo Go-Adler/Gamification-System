@@ -1,1 +1,29 @@
-<p>employee-details works!</p>
+<div class="pt-16">
+  <div class="flex justify-center">
+    
+    <div class="w-8/12 flex flex-col gap-4">
+      <div class="my-4">
+        <div class="text-xl">{{ employee?.name }}</div>
+        <div class="text-lg">{{ employee?.email }}</div>
+      </div>
+      @for (activity of activityTotals | keyvalue; track activity.key) {
+        <mat-card>
+          <div class="flex justify-between p-6">
+            <div>
+              {{ activity.key }}
+            </div>
+            <div class="flex gap-2 items-center">
+              <div>{{ activity.value }}</div>
+            <span class="material-symbols-rounded text-lg text-yellow-400">
+              stars
+            </span>
+            </div>
+          </div>
+        </mat-card>
+      }
+      @empty {
+        <p>There are no activities.</p>
+      }
+    </div>
+    
+</div>
