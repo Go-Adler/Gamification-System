@@ -45,6 +45,6 @@ export class HomeComponent {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+    if (this.subscription) this.subscription.unsubscribe()
   }
 }

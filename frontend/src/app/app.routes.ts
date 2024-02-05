@@ -10,6 +10,7 @@ import { NewComponent } from './admin/task/new/new.component'
 import { EditComponent } from './admin/task/edit/edit.component'
 import { FinishComponent } from './finish/finish.component'
 import { RankingComponent } from './admin/ranking/ranking.component'
+import { EmployeeDetailsComponent } from './admin/employee-details/employee-details.component'
 
 export const routes: Routes = [
   { 
@@ -44,6 +45,10 @@ export const routes: Routes = [
       {
         path: 'home',
         component: RankingComponent
+      },
+      {
+        path: 'employee-details',
+        component: EmployeeDetailsComponent
       },
       {
         path: 'task/edit/:id',

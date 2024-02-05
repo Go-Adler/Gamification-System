@@ -109,7 +109,7 @@ export class NewComponent {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+   if (this.subscription) this.subscription.unsubscribe()
   }
 }
 
